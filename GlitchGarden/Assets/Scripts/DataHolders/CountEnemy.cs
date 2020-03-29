@@ -4,17 +4,36 @@ using UnityEngine;
 
 public class CountEnemy : MonoBehaviour
 {
-    SpawnAttacers EnemySpawner;
-    int enemyNumber;
+    SpawnAttackers EnemySpawner;
+    public int enemyNumber;
     public delegate void ChangeEnemyNomber(int enemyNumber);
     public delegate void EnemySprawn();
     public delegate void EnemyCleaned();
     public event ChangeEnemyNomber EnemyNumberChanged;
     public event EnemySprawn EnemyHere;
     public event EnemyCleaned NoEnemy;
-    
 
-    public void IncreaseEnemy(Vector2 position)
+    private void Start()
+    {
+        Enemy.SayImDead += Enemy_SayImDead;
+        SpawnAttackers.AttackerSwawned += SpawnAttackers_AttackerSwawned;
+    }
+
+    #region EventsHandlers
+    private void SpawnAttackers_AttackerSwawned(SpawnAttackers obj)
+    {
+        IncreaseEnemy();
+    }
+
+    private void Enemy_SayImDead(Enemy obj)
+    {
+        DecreaseEnemy();
+    }
+    #endregion
+
+
+    #region CostomMethods
+    public void IncreaseEnemy()
     {
         enemyNumber = enemyNumber + 1;
         if (EnemyNumberChanged != null)
@@ -27,7 +46,7 @@ public class CountEnemy : MonoBehaviour
             EnemyHere();
         }        
     }
-
+    
     public void DecreaseEnemy()
     {
         enemyNumber = enemyNumber - 1;
@@ -41,5 +60,6 @@ public class CountEnemy : MonoBehaviour
             NoEnemy();
         }
     }
+    #endregion
 
 }

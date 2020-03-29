@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class SpawnAttacers : MonoBehaviour
+public class SpawnAttackers : MonoBehaviour
 {
     [SerializeField] bool spawn;
     [SerializeField] GameObject[] gameAttaker;
@@ -18,7 +18,8 @@ public class SpawnAttacers : MonoBehaviour
     CountEnemy count;
     int nomberOfMyAttackers;
     [SerializeField] SpawnPool[] ThisSpawnPool;
- 
+    public static event Action<SpawnAttackers> AttackerSwawned;
+
     public bool Sprawn
     {
         get { return spawn; }
@@ -27,12 +28,14 @@ public class SpawnAttacers : MonoBehaviour
 
     IEnumerator Start()
     {
+        /*
         if (!foundCounter)
         {
             count = FindObjectOfType<CountEnemy>().GetComponent<CountEnemy>();           
             foundCounter = true;
         }
-        
+        */
+
        while(spawn)
         {
             float timeToWait = UnityEngine.Random.Range(1f, 5f);
@@ -46,8 +49,11 @@ public class SpawnAttacers : MonoBehaviour
                 AttackerSpawned();
             }
             nomberOfMyAttackers++;
-            //lizard.transform.parent = transform;
-            count.IncreaseEnemy(transform.position);
+            if (AttackerSwawned != null)
+            {
+                AttackerSwawned(this);
+            }
+            //count.IncreaseEnemy();
         }
  
     }

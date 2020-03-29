@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Enemy : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class Enemy : MonoBehaviour
     Animator animator = null;
     int eatHush = 0;
     int jumpHush = 0;
+    public static event Action<Enemy> SayImDead;
+    
 
     protected void Awake()
     {
@@ -93,8 +96,12 @@ public class Enemy : MonoBehaviour
 
     public void OnInactivated(Transform transform)
     {
-        CountEnemy countEnemy = FindObjectOfType<CountEnemy>().GetComponent<CountEnemy>();
-        countEnemy.DecreaseEnemy();
+        /*CountEnemy countEnemy = FindObjectOfType<CountEnemy>().GetComponent<CountEnemy>();
+        countEnemy.DecreaseEnemy();*/
+        if (SayImDead != null)
+        {
+            SayImDead(this);
+        }
         gameObject.SetActive(false);
     }
     

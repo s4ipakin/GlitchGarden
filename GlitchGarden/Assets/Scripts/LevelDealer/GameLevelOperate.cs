@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 public class GameLevelOperate : MonoBehaviour
 {
     DataManager levelHolder;
-    [SerializeField] SpawnAttacers[] spawnAttacers;
+    [SerializeField] SpawnAttackers[] spawnAttacers;
     [SerializeField] LevelTimer levelTimer;
-    int currentLevel;
+    public int currentLevel;
 
     private void Awake()
     {
@@ -41,7 +41,7 @@ public class GameLevelOperate : MonoBehaviour
 
     private void SetRandomRows()
     {
-        List<SpawnAttacers> UnsetSpawners = new List<SpawnAttacers>();
+        List<SpawnAttackers> UnsetSpawners = new List<SpawnAttackers>();
         int rowsSetUp = 0;
         //foreach (SpawnAttacers spawn in spawnAttacers)
         //{

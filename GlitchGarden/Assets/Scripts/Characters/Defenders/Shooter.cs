@@ -10,7 +10,7 @@ public class Shooter : MonoBehaviour
     SpawnPool ProjectileSpawner;
     
     CountEnemy countEnemy;
-    SpawnAttacers SpawnerOnLine;
+    SpawnAttackers SpawnerOnLine;
     Animator animator;
     public float yOfEnemy;
     public bool flgEnemyOnTheWay;
@@ -43,8 +43,8 @@ public class Shooter : MonoBehaviour
 
     private void GetSpawnerOnLine()
     {
-        var attackerSpawners = FindObjectsOfType<SpawnAttacers>();
-        foreach (SpawnAttacers spawnAttacer in attackerSpawners)
+        var attackerSpawners = FindObjectsOfType<SpawnAttackers>();
+        foreach (SpawnAttackers spawnAttacer in attackerSpawners)
         {
             float getY = spawnAttacer.transform.position.y;
             if (CheckEnemyPos(getY))

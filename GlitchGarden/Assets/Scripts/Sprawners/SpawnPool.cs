@@ -4,16 +4,32 @@ using UnityEngine;
 
 public class SpawnPool : MonoBehaviour
 {
+    #region Variables
     [SerializeField]
     GameObject generatedPrefab;
     GameObject[] objrctsArray;
     [SerializeField]
     int poolSize = 5;
     public Queue<Transform> objectQueue = new Queue<Transform>();
+    public bool fox;
+    #endregion
+
+
     void Start()
     {
         objrctsArray = new GameObject[poolSize];
-        for (int i=0; i<poolSize; i++)
+        InstantiatePrefabs();
+        if (generatedPrefab.GetComponent<Fox>() != null)
+        {
+            fox = true;
+        }
+    }
+
+    #region CostmMethods
+
+    private void InstantiatePrefabs()
+    {
+        for (int i = 0; i < poolSize; i++)
         {
             objrctsArray[i] = Instantiate(generatedPrefab, Vector2.zero, Quaternion.identity) as GameObject;
             Transform trObject = objrctsArray[i].GetComponent<Transform>();
@@ -23,7 +39,6 @@ public class SpawnPool : MonoBehaviour
         }
     }
 
-    
     public Transform GenerateFromPool(Vector2 position, Quaternion rotation)
     {
         Transform GetObject = objectQueue.Dequeue();
@@ -33,6 +48,6 @@ public class SpawnPool : MonoBehaviour
         objectQueue.Enqueue(GetObject);
         return GetObject;
     }
+    #endregion
 
-    
 }

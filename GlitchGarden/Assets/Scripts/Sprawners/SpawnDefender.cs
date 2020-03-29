@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class SpawnDefender : MonoBehaviour
 {
+
+    #region Variables
     Defender defender1;
     Bank bank;
     List<Vector2> takenPositions = new List<Vector2>();
@@ -12,6 +14,9 @@ public class SpawnDefender : MonoBehaviour
     [SerializeField] Defender trofyPrefub;
     [SerializeField] Defender gravePrefub;
     [SerializeField] Defender catapultPrefub;
+    #endregion
+
+
     private void Start()
     {
         bank = FindObjectOfType<Bank>();
@@ -21,6 +26,14 @@ public class SpawnDefender : MonoBehaviour
             SetSavedPrefubs(dataManager);
         }
     }
+
+
+    private void OnMouseDown()
+    {
+        Spawn(GetWorldPos());
+    }
+
+    #region CostmMethods
 
     private void SetSavedPrefubs(DataManager dataManager)
     {
@@ -41,11 +54,7 @@ public class SpawnDefender : MonoBehaviour
     {
         defender1 = defender;
     }
-
-    private void OnMouseDown()
-    {
-        Spawn(GetWorldPos());
-    }
+ 
 
     private Vector2 GetWorldPos()
     {
@@ -76,6 +85,6 @@ public class SpawnDefender : MonoBehaviour
     {
         takenPositions.Remove(pos);
     }
-
+    #endregion
 
 }

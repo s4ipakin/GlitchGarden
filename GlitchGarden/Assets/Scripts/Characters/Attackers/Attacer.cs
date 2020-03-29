@@ -9,13 +9,13 @@ public class Attacer : MonoBehaviour
     float speed = 1;
     CountEnemy countEnemy;
     public int hits;
-    SpawnAttacers mySpawner;
+    SpawnAttackers mySpawner;
     Defender defender;
     int GetDifender;
     void Start()
     {
         countEnemy = FindObjectOfType<CountEnemy>().GetComponent<CountEnemy>();
-        mySpawner = GetComponentInParent<SpawnAttacers>();
+        mySpawner = GetComponentInParent<SpawnAttackers>();
         //Destroy(gameObject, 10);       
     }
 

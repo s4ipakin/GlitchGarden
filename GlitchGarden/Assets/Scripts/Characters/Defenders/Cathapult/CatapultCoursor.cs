@@ -6,7 +6,7 @@ public class CatapultCoursor : MonoBehaviour
 {
     GameObject coursor;
     GameObject enemySprawner;
-    SpawnAttacers sprawner;
+    SpawnAttackers sprawner;
     bool _isProjectilePressed;
     public bool IsProjectilePressed
     {
@@ -25,7 +25,7 @@ public class CatapultCoursor : MonoBehaviour
     {
         coursor = transform.Find("Cursor").gameObject;
         enemySprawner = FindLayer("Sprawner", Vector2.right);
-        sprawner = enemySprawner.GetComponent<SpawnAttacers>();
+        sprawner = enemySprawner.GetComponent<SpawnAttackers>();
         sprawner.AttackerSpawned += SetAnimation;
         sprawner.AttackersRanOut += UnsetAnimation;
         if(!CheckLayer("Enemy", Vector2.right))

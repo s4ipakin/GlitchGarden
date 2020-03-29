@@ -1,22 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
 
 public class TrofyProfit : MonoBehaviour
 {
 
-    [SerializeField] int pointsForBonce = 3;
-    Bank bank;
+    [SerializeField] int pointsForBonce = 3;   
+    public static event Action<int> PointsEarned;
+
 
     void Start()
     {
-        bank = FindObjectOfType<Bank>().GetComponent<Bank>();
         GetComponent<Defender>().SetType(1);
     }
 
     public void GetPtofit()
     {
-        bank.AddPoints(pointsForBonce);
+        if (PointsEarned != null)
+        {
+            PointsEarned(pointsForBonce);
+        }
     }
    
 }
