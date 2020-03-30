@@ -23,5 +23,4 @@ public class TrofyProfit : MonoBehaviour
             PointsEarned(pointsForBonce);
         }
     }
-   
 }

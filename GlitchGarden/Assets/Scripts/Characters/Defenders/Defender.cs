@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Defender : MonoBehaviour
 {
+
+    #region Variables
     [SerializeField] int cost = 10;
     private int _type;
     public int Type { get { return _type; } }
@@ -11,16 +13,16 @@ public class Defender : MonoBehaviour
     public delegate void StopAttacking();
     public event StopAttacking OnFinished;
     Health health;
-    //SliderTowerHealth healthBar;
+    #endregion
 
     private void Start()
     {
         health = GetComponent<Health>();
         health.OnSwitchedOff += LeavePlace;
-        //healthBar = GetComponentInChildren<SliderTowerHealth>();        
-        //healthBar.gameObject.SetActive(false);
-
     }
+
+
+    #region Costom Methods
 
     public void SetType(int type)
     {
@@ -40,21 +42,5 @@ public class Defender : MonoBehaviour
         }
         Destroy(gameObject);
     }
-
-    //protected void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    healthBar.gameObject.SetActive(true);
-    //}
-    //private void OnCollisionExit2D(Collision2D collision)
-    //{
-    //    healthBar.gameObject.SetActive(false);
-    //}
-
-    //private void OnDestroy()
-    //{
-    //    if (OnFinished != null)
-    //    {
-    //        OnFinished();
-    //    }
-    //}
+    #endregion
 }

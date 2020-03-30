@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class Cathapult  : MonoBehaviour
 {
+
+    #region Variables
     private SpawnPool spawnProjectile;
-    //private CatapultProjectile projectile;
     [SerializeField] Rigidbody2D sling;
     [SerializeField] bool debugLoad;
     [SerializeField] GameObject rightHook;
@@ -15,6 +16,8 @@ public class Cathapult  : MonoBehaviour
     Vector3 lefttHookPos;
     LineRenderer lhLineRenderer;
     LineRenderer rhLineRenderer;
+    #endregion
+
     IEnumerator Start()
     {
         if (!setPrm)
@@ -33,14 +36,8 @@ public class Cathapult  : MonoBehaviour
         LoadProjectile();
     }
 
-    //void Update()
-    //{
-    //    if (debugLoad)
-    //    {
-    //        debugLoad = false;
-    //        LoadProjectile();
-    //    }
-    //}
+
+    #region Costom Methods
 
     public void LoadProjectile()
     {
@@ -64,19 +61,11 @@ public class Cathapult  : MonoBehaviour
         lPos[0] = LeftPos;
         rhLineRenderer.SetPositions(rPos);
         lhLineRenderer.SetPositions(lPos);
-        //rhLineRenderer.SetPosition(0, rightHookPos);
-        //rhLineRenderer.SetPosition(1, RightPos);
-        //lhLineRenderer.SetPosition(0, lefttHookPos);
-        //lhLineRenderer.SetPosition(1, LeftPos);
     }
     public void SetOffStrings()
     {
         rhLineRenderer.enabled = false;
         lhLineRenderer.enabled = false;
     }
-    //public void SetOnStrings()
-    //{
-    //    rhLineRenderer.enabled = true;
-    //    lhLineRenderer.enabled = true;
-    //}
+    #endregion
 }

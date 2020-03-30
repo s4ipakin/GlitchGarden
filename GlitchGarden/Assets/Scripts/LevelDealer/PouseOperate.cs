@@ -6,16 +6,28 @@ using UnityEngine.SceneManagement;
 
 public class PouseOperate : MonoBehaviour
 {
+
+    #region Variables
     [SerializeField] GameObject pauseMenu;
     DataManager dataManager;
     bool _paused;
     AudioSource audioClip;
     public bool Paused { get { return _paused; } }
+    #endregion
+
+
+    #region MonoBehaviour Methods
+
+
     private void Start()
     {
         dataManager = FindObjectOfType<DataManager>().GetComponent<DataManager>();
         audioClip = GetComponent<AudioSource>();
     }
+    #endregion
+
+
+    #region Costom Methods
 
     public void SetOnPause()
     {
@@ -46,4 +58,5 @@ public class PouseOperate : MonoBehaviour
         audioClip.Play();
         dataManager.SaveData();
     }
+    #endregion
 }

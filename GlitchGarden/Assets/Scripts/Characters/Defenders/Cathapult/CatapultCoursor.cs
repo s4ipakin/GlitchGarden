@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class CatapultCoursor : MonoBehaviour
 {
+    #region Variables
     GameObject coursor;
     GameObject enemySprawner;
     SpawnAttackers sprawner;
     bool _isProjectilePressed;
+    #endregion
+
     public bool IsProjectilePressed
     {
         set
@@ -20,6 +23,8 @@ public class CatapultCoursor : MonoBehaviour
         }
     }
 
+
+    #region MonoBehaviour Methods
 
     void Start()
     {
@@ -34,6 +39,17 @@ public class CatapultCoursor : MonoBehaviour
         }
         
     }
+
+    private void OnDestroy()
+    {
+        sprawner.AttackerSpawned -= SetAnimation;
+        sprawner.AttackersRanOut -= UnsetAnimation;
+    }
+    #endregion
+
+
+
+    #region Costom Methods
 
     private void UnsetAnimation()
     {
@@ -67,12 +83,8 @@ public class CatapultCoursor : MonoBehaviour
         }
         return false;
     }
+    #endregion
 
-    private void OnDestroy()
-    {
-        sprawner.AttackerSpawned -= SetAnimation;
-        sprawner.AttackersRanOut -= UnsetAnimation;
-    }
 
-    
+
 }

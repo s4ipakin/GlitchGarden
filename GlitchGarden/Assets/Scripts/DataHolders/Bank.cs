@@ -88,6 +88,7 @@ public class Bank : MonoBehaviour
     private void OnDestroy()
     {
         pointsHolder.SetPoints(allPoints);
+        TrofyProfit.PointsEarned -= TrofyProfit_PointsEarned;
     }
 
 }

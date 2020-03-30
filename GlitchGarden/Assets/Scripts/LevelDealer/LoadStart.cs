@@ -8,15 +8,29 @@ using UnityEngine.SceneManagement;
 
 public class LoadStart : MonoBehaviour {
 
+    #region Variables
     [SerializeField] float timeToWait = 6;
     Coroutine Loading;
     int sceneIndex;
-	// Use this for initialization
-	void Start () {
+    public static event Action<LoadStart> isLoading;
+    public static event Action<LoadStart> isSaving;
+    public static event Action<LoadStart> isLoadingFromStart;
+    #endregion
+
+
+    #region MonoBehaviour Methods
+
+    void Start () 
+    {
         sceneIndex = SceneManager.GetActiveScene().buildIndex;
         if (sceneIndex == 0)
         Loading = StartCoroutine(WaitTillLoad());
 	}
+    #endregion
+
+
+
+    #region Costom Methods
 
     IEnumerator WaitTillLoad()
     {
@@ -31,9 +45,10 @@ public class LoadStart : MonoBehaviour {
 
     public void LoadWithSavedData()
     {
-        DataManager dataManager = FindObjectOfType<DataManager>().GetComponent<DataManager>();
-        dataManager.IsLoading = true;
-        dataManager.LoadSavedData();
+        if (isLoading != null)
+        {
+            isLoading(this);
+        }
         SceneManager.LoadScene(2);
     }
     public void LoadScene(int index)
@@ -48,14 +63,18 @@ public class LoadStart : MonoBehaviour {
 
     public void Save()
     {
-        DataManager dataManager = FindObjectOfType<DataManager>().GetComponent<DataManager>();
-        dataManager.SaveData();
+        if (isSaving != null)
+        {
+            isSaving(this);
+        }
     }
     public void LoadFromBegining()
-    {
-        DataManager dataManager = FindObjectOfType<DataManager>().GetComponent<DataManager>();
-        dataManager.SetPoints(0);
-        dataManager.SetLevel(0);
+    {      
+        if (isLoadingFromStart != null)
+        {
+            isLoadingFromStart(this);
+        }
         SceneManager.LoadScene(2);
     }
+    #endregion
 }

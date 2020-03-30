@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
+
+    #region Variables
     public static DataManager instance;
     int level;
     int points;
     int prefubCount;
     int rowsSetUp;
     public bool IsLoading { get; set; }
+    #endregion
+
+
+    #region MonoBehaviour Methods
 
     void Awake()
     {
@@ -26,9 +32,37 @@ public class DataManager : MonoBehaviour
     }
     void Start()
     {
-        
+        LoadStart.isLoading += LoadStart_isLoading;
+        LoadStart.isSaving += LoadStart_isSaving;
+        LoadStart.isLoadingFromStart += LoadStart_isLoadingFromStart;
     }
 
+    #endregion
+
+
+    #region EventsHandlers
+
+    private void LoadStart_isLoading(LoadStart obj)
+    {
+        IsLoading = true;
+        LoadSavedData();
+    }
+
+    private void LoadStart_isSaving(LoadStart obj)
+    {
+        SaveData();
+    }
+
+    private void LoadStart_isLoadingFromStart(LoadStart obj)
+    {
+        SetPoints(0);
+        SetLevel(0);
+        IsLoading = false;
+    }
+
+    #endregion
+
+    #region GetSet Data
     public void SetRaws(int rowsSetUp)
     {
         this.rowsSetUp = rowsSetUp;
@@ -63,6 +97,10 @@ public class DataManager : MonoBehaviour
     {
         return prefubCount;
     }
+    #endregion
+
+
+    #region SaveLoad data
 
     public void SaveData()
     {
@@ -112,6 +150,6 @@ public class DataManager : MonoBehaviour
                 Id++;
             }
         }
-        
     }
+    #endregion
 }

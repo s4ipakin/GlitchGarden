@@ -17,6 +17,10 @@ public class SpawnDefender : MonoBehaviour
     #endregion
 
 
+
+    #region MonoBehaviour Methods
+
+
     private void Start()
     {
         bank = FindObjectOfType<Bank>();
@@ -32,6 +36,9 @@ public class SpawnDefender : MonoBehaviour
     {
         Spawn(GetWorldPos());
     }
+    #endregion
+
+
 
     #region CostmMethods
 
@@ -78,7 +85,7 @@ public class SpawnDefender : MonoBehaviour
             (takenPositions.Contains(worldPos)) || pouseOperate.Paused) { return; }
         bank.TakePoints(defender1._Price);
         Defender newDefender = Instantiate(defender1, worldPos, transform.rotation) as Defender;
-        takenPositions.Add(worldPos); //takenPositions.Contains(worldPos)
+        takenPositions.Add(worldPos);
     }
 
     public void FreePos(Vector2 pos)

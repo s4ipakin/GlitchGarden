@@ -7,6 +7,8 @@ using System;
 
 public class CatapultProjectile : ProjectileBase, IProjectile
 {
+
+    #region Variables
     [SerializeField] float damage = 100;
     public float Damage { get { return damage; } }
     [SerializeField]   
@@ -28,6 +30,11 @@ public class CatapultProjectile : ProjectileBase, IProjectile
     bool isActiveOld;
     float haitOld;
     CatapultCoursor catapultCoursor;
+    public static event Action<CatapultProjectile> SayImDead;
+    #endregion
+
+
+    #region MonoBehaviour Methods
 
     void Start()
     {
@@ -36,15 +43,9 @@ public class CatapultProjectile : ProjectileBase, IProjectile
         slingRigidbody = thisSpring.connectedBody;
         catapultCoursor = slingRigidbody.gameObject.GetComponentInParent<CatapultCoursor>();
         DelayToRelease = 1 / (thisSpring.frequency * 5);
-        //rightPos = rifhtPoint.transform.position;
-        //leftPos = leftPoint.transform.position;
         myCatapult = GetComponentInParent<Cathapult>();
-
-        //myCatapult.SetOnStrings();
-
     }
 
-    // Update is called once per frame
     protected override void Update()
     {
         if (isPressed)
@@ -62,21 +63,6 @@ public class CatapultProjectile : ProjectileBase, IProjectile
     }
 
 
-
-    private void SwitchOff()
-    {
-        if ((transform.position.y < (slingRigidbody.position.y - 0.5f)) 
-            && (haitOld > transform.position.y))
-        {           
-            isShot = false;
-            Reload();
-            GameObject particle = Instantiate(Explosion, transform.position, transform.rotation);
-            Destroy(particle, 2f);
-            this.gameObject.SetActive(false);
-        }
-        haitOld = transform.position.y;
-    }
-
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         var enemy = collision.gameObject.GetComponent(typeof(Enemy));
@@ -87,8 +73,57 @@ public class CatapultProjectile : ProjectileBase, IProjectile
             {
                 SetDamage(enemy.gameObject, damage);
             }
-        }        
+        }
     }
+
+
+    private void OnMouseDown()
+    {
+        isPressed = true;
+        thisRigidbody.isKinematic = true;
+        catapultCoursor.IsProjectilePressed = true;
+        Debug.Log("Click");
+    }
+
+    private void OnMouseUp()
+    {
+        isPressed = false;
+        thisRigidbody.isKinematic = false;
+        StartCoroutine(ProjectileRelease());
+        myCatapult.SetOffStrings();
+        catapultCoursor.IsProjectilePressed = false;
+    }
+
+
+    private void OnEnable()
+    {
+        Vector3 position = transform.position;
+        position.z = -0.2f;
+        transform.position = position;
+    }
+
+    #endregion
+
+
+    #region Costom Methods
+
+    private void SwitchOff()
+    {
+        if ((transform.position.y < (slingRigidbody.position.y - 0.5f)) 
+            && (haitOld > transform.position.y))
+        {           
+            isShot = false;
+            Reload();
+            if (SayImDead != null)
+            {
+                SayImDead(this);
+            }
+            this.gameObject.SetActive(false);
+        }
+        haitOld = transform.position.y;
+    }
+
+   
 
     private void Reload()
     {
@@ -124,34 +159,11 @@ public class CatapultProjectile : ProjectileBase, IProjectile
     }
 
     
-    private void OnMouseDown()
-    {
-        isPressed = true;
-        thisRigidbody.isKinematic = true;
-        catapultCoursor.IsProjectilePressed = true;
-        Debug.Log("Click");
-    }
-
-    private void OnMouseUp()
-    {
-        isPressed = false;
-        thisRigidbody.isKinematic = false;
-        StartCoroutine(ProjectileRelease());
-        myCatapult.SetOffStrings();
-        catapultCoursor.IsProjectilePressed = false;
-    }
-
     private IEnumerator ProjectileRelease()
     {
         yield return new WaitForSeconds(DelayToRelease);
         thisSpring.enabled = false;
         isShot = true;
     }
-
-    private void OnEnable()
-    {
-        Vector3 position = transform.position;
-        position.z = -0.2f;
-        transform.position = position;        
-    }
+    #endregion
 }

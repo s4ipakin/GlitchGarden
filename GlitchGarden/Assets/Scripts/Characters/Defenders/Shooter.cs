@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
+
+    #region Variables
     [SerializeField] GameObject Projectile;
     [SerializeField] GameObject Gun;
     SpawnPool ProjectileSpawner;
@@ -14,23 +16,33 @@ public class Shooter : MonoBehaviour
     Animator animator;
     public float yOfEnemy;
     public bool flgEnemyOnTheWay;
+    #endregion
+
+
+    #region MonoBehaviour Methods
+
     private void Start()
     {
-        //countEnemy = FindObjectOfType<CountEnemy>().GetComponent<CountEnemy>();
-        //countEnemy.EnemyHere += StartShooting;
-        //countEnemy.NoEnemy += StopShooting;
         GetSpawnerOnLine();
         animator = GetComponent<Animator>();
         ProjectileSpawner = GetComponent<SpawnPool>();
         SpawnerOnLine.AttackerSpawned += StartShooting;
         SpawnerOnLine.AttackersRanOut += StopShooting;
         GetComponent<Defender>().SetType(0);
-        CheckEnemyOnLine();
+        FirstCheckEnemyOnLine();
     }
 
-    
+    public void OnDestroy()
+    {
+        SpawnerOnLine.AttackerSpawned -= StartShooting;
+        SpawnerOnLine.AttackersRanOut -= StopShooting;
+    }
+    #endregion
 
-    private void CheckEnemyOnLine()
+
+    #region Costom Methods
+
+    private void FirstCheckEnemyOnLine()
     {
         LayerMask mask = LayerMask.GetMask("Enemy");
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right,
@@ -70,7 +82,6 @@ public class Shooter : MonoBehaviour
 
     private bool CheckEnemyPos(float yPosition)
     {
-        //return (((transform.position.y - 0.6f) < yPosition) && ((transform.position.y + 0.6f) > yPosition)); 
         return  Mathf.Abs(transform.position.y - yPosition) < 0.6f;
     }
 
@@ -78,16 +89,8 @@ public class Shooter : MonoBehaviour
     {
         if (flgEnemyOnTheWay)
         {
-            //Instantiate(Projectile, Gun.transform.position, transform.rotation);
             ProjectileSpawner.GenerateFromPool(Gun.transform.position, transform.rotation);
         }
-        
     }
-    public void OnDestroy()
-    {
-        SpawnerOnLine.AttackerSpawned -= StartShooting;
-        SpawnerOnLine.AttackersRanOut -= StopShooting;
-    }
-
-    
+    #endregion
 }

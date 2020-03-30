@@ -5,6 +5,8 @@ using System;
 
 public class Enemy : MonoBehaviour
 {
+
+    #region Variables
     [SerializeField] int damage = 2;
     [SerializeField]
    
@@ -23,8 +25,10 @@ public class Enemy : MonoBehaviour
     int eatHush = 0;
     int jumpHush = 0;
     public static event Action<Enemy> SayImDead;
-    
+    #endregion
 
+
+    #region MonoBehaviour Methods
     protected void Awake()
     {
         health = GetComponent<Health>();
@@ -42,20 +46,27 @@ public class Enemy : MonoBehaviour
     protected void OnTriggerEnter2D(Collider2D collision)
     {
 
-        //var projectile = collision.gameObject.GetComponent(typeof(IProjectile));
         var ifDefender = collision.GetComponent<Defender>();
         if (ifDefender)
         {
             SetBehevior(ifDefender);           
         }
-        //if (projectile)
-        //{
-        //    //Destroy(collision.gameObject);           
-        //    GetComponent<Health>().TakeHealth((projectile as IProjectile).Damage);
-        //    //collision.gameObject.SetActive(false);
-        //}
     }
 
+
+    public void OnInactivated(Transform transform)
+    {
+        if (SayImDead != null)
+        {
+            SayImDead(this);
+        }
+        gameObject.SetActive(false);
+    }
+    #endregion
+
+
+
+    #region Costom Methods
 
     protected virtual void SetBehevior(Defender defender)
     {
@@ -77,7 +88,6 @@ public class Enemy : MonoBehaviour
 
     protected void StopAttacking()
     {
-        //defender.OnFinished -= StopAttacking;
         StopCoroutine(Atacking(defender));
         if (!this) { return; }
         animator.SetBool(eatHush, false);
@@ -93,23 +103,11 @@ public class Enemy : MonoBehaviour
         }
         
     }
-
-    public void OnInactivated(Transform transform)
-    {
-        /*CountEnemy countEnemy = FindObjectOfType<CountEnemy>().GetComponent<CountEnemy>();
-        countEnemy.DecreaseEnemy();*/
-        if (SayImDead != null)
-        {
-            SayImDead(this);
-        }
-        gameObject.SetActive(false);
-    }
-    
-
-    
+ 
 
     public void SetSpeed(float speed)
     {
         this.speed = speed;
     }
+    #endregion
 }

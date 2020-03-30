@@ -5,10 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class GameLevelOperate : MonoBehaviour
 {
+
+    #region Variables
     DataManager levelHolder;
     [SerializeField] SpawnAttackers[] spawnAttacers;
     [SerializeField] LevelTimer levelTimer;
     public int currentLevel;
+    #endregion
+
+
+    #region MonoBehaviour Methods
 
     private void Awake()
     {
@@ -38,6 +44,10 @@ public class GameLevelOperate : MonoBehaviour
         }
         levelTimer.LevelFinished += LoadNext;
     }
+    #endregion
+
+
+    #region Costom Methods
 
     private void SetRandomRows()
     {
@@ -86,4 +96,5 @@ public class GameLevelOperate : MonoBehaviour
         levelHolder.SetLevel(currentLevel + 1);
         SceneManager.LoadScene(3);
     }
+    #endregion
 }
