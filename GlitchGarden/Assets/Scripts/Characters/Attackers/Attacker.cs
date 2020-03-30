@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Attacker : MonoBehaviour
 {
@@ -8,18 +9,17 @@ public class Attacker : MonoBehaviour
     [SerializeField] float damage = 2;
     [Range(0f, 5f)]    
     float speed = 1;
-    CountEnemy countEnemy;
     public int hits;
     SpawnAttackers mySpawner;
     Defender defender;
     int GetDifender;
+    public static event Action<Attacker> SayImDead;
     #endregion
 
     #region MonoBehaviour Methods
 
     void Start()
     {
-        countEnemy = FindObjectOfType<CountEnemy>().GetComponent<CountEnemy>();
         mySpawner = GetComponentInParent<SpawnAttackers>();
     }
 
@@ -53,7 +53,10 @@ public class Attacker : MonoBehaviour
 
     private void OnDestroy()
     {
-        countEnemy.DecreaseEnemy();
+        if (SayImDead != null)
+        {
+            SayImDead(this);
+        }
     }
     #endregion
 

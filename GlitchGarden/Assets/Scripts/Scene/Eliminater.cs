@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 public class Eliminater : MonoBehaviour
 {
     public int Collisions;
     float health = 5f;
     SliderTowerHealth healthBar;
+    public static event Action<Eliminater> gameOver;
 
     private void Start()
     {
@@ -15,24 +17,23 @@ public class Eliminater : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
-    {
-        //Destroy(collision.gameObject);
-        
+    {        
         Collisions = Collisions + 1;
         Health enemy = collision.GetComponent<Health>();
         if (enemy)
         {
             enemy.TakeHealth(enemy.StartHealth);
         }
-        //collision.gameObject.SetActive(false);
         float normalizedDamage = (health - Collisions) / health;
 
         
         healthBar.SetHealthBar(normalizedDamage);
         if (Collisions >= 5)
         {
-            DataManager dataManager = FindObjectOfType<DataManager>().GetComponent<DataManager>();
-            dataManager.IsLoading = false;
+            if (gameOver != null)
+            {
+                gameOver(this);
+            }
             SceneManager.LoadScene(4);
         }
     }

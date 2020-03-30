@@ -2,37 +2,58 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using System;
 
 public class DefenderButton : MonoBehaviour
 {
+    #region Variables
     [SerializeField] Defender defender;
     [SerializeField] GameObject hightLighter;
-    Bank bank;
+    //Bank bank;
+    public static event Action<Defender> inquiryToBuy;
     int _accaunt;
-    //public int Accaunt
-    //{ 
-    //    set
-    //    {
-    //        _accaunt = value;
-    //        if (_accaunt < defender._Price)
-    //        {
-    //            this.GetComponent<SpriteRenderer>().color = new Color32(84, 91, 85, 255);
-    //        }
-    //    }
-    //}
-    
+    #endregion
+
+
+    #region MonoBehaviour Methods
+
     private void Start()
     {
         hightLighter.SetActive(false);
-        bank = FindObjectOfType<Bank>();
+        Bank bank = FindObjectOfType<Bank>();
         _accaunt = bank._Account;
         SetEnabled();
-        bank.SummChanged += CheckAccount;
+        Bank.SummChanged += CheckAccount;
         Text priceTag = GetComponentInChildren<Text>();
         priceTag.text = defender._Price.ToString();
     }
 
+    private void OnMouseDown()
+    {
+        var allButtons = FindObjectsOfType<DefenderButton>();
+        foreach (DefenderButton button in allButtons)
+        {
+            button.Unhightlight();
+        }
+        if (_accaunt >= defender._Price)
+        {
+            hightLighter.SetActive(true);
+            if (inquiryToBuy != null)
+            {
+                inquiryToBuy(defender);
+            }
+        }
+    }
+
+
+    private void OnDestroy()
+    {
+        Bank.SummChanged -= CheckAccount;
+    }
+    #endregion
+
+
+    #region Costom Methods
     private void CheckAccount(int points)
     {
         _accaunt = points;
@@ -48,31 +69,14 @@ public class DefenderButton : MonoBehaviour
         else
         {
             this.GetComponent<SpriteRenderer>().color = new Color32(84, 91, 85, 255);
-            //hightLighter.SetActive(false);
         }
     }
 
-    private void OnMouseDown()
-    {
-        var allButtons = FindObjectsOfType<DefenderButton>();
-        foreach(DefenderButton button in allButtons)
-        {
-            //button.GetComponent<SpriteRenderer>().color = new Color32(84, 91, 85, 255); 
-            button.Unhightlight();
-        }
-        if(_accaunt >= defender._Price)
-        {
-            //this.GetComponent<SpriteRenderer>().color = Color.white;
-            hightLighter.SetActive(true);
-            FindObjectOfType<SpawnDefender>().SetDefender(defender);
-        }       
-    }
+    
 
     public void Unhightlight()
     {
         hightLighter.SetActive(false);
     }
-
-
-
+    #endregion
 }

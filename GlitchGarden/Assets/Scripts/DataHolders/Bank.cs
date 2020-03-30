@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class Bank : MonoBehaviour
 {
@@ -9,8 +10,9 @@ public class Bank : MonoBehaviour
     DataManager pointsHolder;
     int allPoints = 100;
     Text pointText;
-    public delegate void ChangeSumm(int points);
-    public event ChangeSumm SummChanged;
+    //public delegate void ChangeSumm(int points);
+    //public event ChangeSumm SummChanged;
+    public static event Action<int> SummChanged;
     AudioSource audioSource;
     #endregion
 

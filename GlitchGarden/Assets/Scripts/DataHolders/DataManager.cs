@@ -35,7 +35,10 @@ public class DataManager : MonoBehaviour
         LoadStart.isLoading += LoadStart_isLoading;
         LoadStart.isSaving += LoadStart_isSaving;
         LoadStart.isLoadingFromStart += LoadStart_isLoadingFromStart;
+        Eliminater.gameOver += Eliminater_gameOver;
     }
+
+    
 
     #endregion
 
@@ -57,6 +60,11 @@ public class DataManager : MonoBehaviour
     {
         SetPoints(0);
         SetLevel(0);
+        IsLoading = false;
+    }
+
+    private void Eliminater_gameOver(Eliminater obj)
+    {
         IsLoading = false;
     }
 

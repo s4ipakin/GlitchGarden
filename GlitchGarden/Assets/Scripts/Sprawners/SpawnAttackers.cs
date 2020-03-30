@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class SpawnAttackers : MonoBehaviour
 {
+    #region Variables
     [SerializeField] bool spawn;
     [SerializeField] GameObject[] gameAttaker;
     Coroutine SpawnLizard;
@@ -25,24 +26,20 @@ public class SpawnAttackers : MonoBehaviour
         get { return spawn; }
         set { spawn = value; }
     }
+    #endregion
+
+
+    #region MonoBehaviour Methods
 
     IEnumerator Start()
     {
-        /*
-        if (!foundCounter)
-        {
-            count = FindObjectOfType<CountEnemy>().GetComponent<CountEnemy>();           
-            foundCounter = true;
-        }
-        */
+       
 
        while(spawn)
         {
             float timeToWait = UnityEngine.Random.Range(1f, 5f);
             yield return new WaitForSeconds(timeToWait);
             attackerType = (int) Mathf.Round(UnityEngine.Random.Range(0, (ThisSpawnPool.Length)));
-            //GameObject lizard = Instantiate(gameAttaker[attackerType], transform.position, transform.rotation) as GameObject;
-
             Transform attacker = ThisSpawnPool[attackerType].GenerateFromPool(transform.position, transform.rotation);
             if (AttackerSpawned != null)
             {
@@ -53,7 +50,6 @@ public class SpawnAttackers : MonoBehaviour
             {
                 AttackerSwawned(this);
             }
-            //count.IncreaseEnemy();
         }
  
     }
@@ -68,16 +64,5 @@ public class SpawnAttackers : MonoBehaviour
             }
         }
     }
-
-    //public void DecreaseAttackerNumber()
-    //{
-    //    nomberOfMyAttackers--;
-    //    if (nomberOfMyAttackers == 0)
-    //    {
-    //        if (AttackersRanOut != null)
-    //        {
-    //            AttackersRanOut();
-    //        }
-    //    }
-    //}
+    #endregion
 }

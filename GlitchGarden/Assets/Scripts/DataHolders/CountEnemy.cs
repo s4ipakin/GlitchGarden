@@ -16,8 +16,11 @@ public class CountEnemy : MonoBehaviour
     private void Start()
     {
         Enemy.SayImDead += Enemy_SayImDead;
+        Attacker.SayImDead += Attacker_SayImDead;
         SpawnAttackers.AttackerSwawned += SpawnAttackers_AttackerSwawned;
     }
+
+    
 
     private void OnDestroy()
     {
@@ -32,6 +35,11 @@ public class CountEnemy : MonoBehaviour
     }
 
     private void Enemy_SayImDead(Enemy obj)
+    {
+        DecreaseEnemy();
+    }
+
+    private void Attacker_SayImDead(Attacker obj)
     {
         DecreaseEnemy();
     }

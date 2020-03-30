@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using System;
 
 public class PouseOperate : MonoBehaviour
 {
@@ -12,7 +12,12 @@ public class PouseOperate : MonoBehaviour
     DataManager dataManager;
     bool _paused;
     AudioSource audioClip;
+    public static event Action<bool> isPaused;
+    public bool dedugCheck = false;
     public bool Paused { get { return _paused; } }
+      
+
+    
     #endregion
 
 

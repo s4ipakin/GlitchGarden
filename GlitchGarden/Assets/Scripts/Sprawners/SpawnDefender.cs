@@ -14,6 +14,7 @@ public class SpawnDefender : MonoBehaviour
     [SerializeField] Defender trofyPrefub;
     [SerializeField] Defender gravePrefub;
     [SerializeField] Defender catapultPrefub;
+    PouseOperate pouseOperate;
     #endregion
 
 
@@ -25,22 +26,43 @@ public class SpawnDefender : MonoBehaviour
     {
         bank = FindObjectOfType<Bank>();
         DataManager dataManager = FindObjectOfType<DataManager>().GetComponent<DataManager>();
+        pouseOperate = FindObjectOfType<PouseOperate>().GetComponent<PouseOperate>();
         if (dataManager.IsLoading)
         {
             SetSavedPrefubs(dataManager);
         }
+        Defender.SayImDead += Defender_SayImDead;
+        DefenderButton.inquiryToBuy += DefenderButton_inquiryToBuy;
     }
 
+    
 
     private void OnMouseDown()
     {
         Spawn(GetWorldPos());
+    }
+
+    private void OnDestroy()
+    {
+        Defender.SayImDead -= Defender_SayImDead;
+        DefenderButton.inquiryToBuy -= DefenderButton_inquiryToBuy;
     }
     #endregion
 
 
 
     #region CostmMethods
+
+    private void Defender_SayImDead(Defender obj)
+    {
+        FreePos(obj.transform.position);
+    }
+
+    private void DefenderButton_inquiryToBuy(Defender obj)
+    {
+        SetDefender(obj);
+    }
+
 
     private void SetSavedPrefubs(DataManager dataManager)
     {
@@ -80,7 +102,6 @@ public class SpawnDefender : MonoBehaviour
 
     private void Spawn(Vector2 worldPos)
     {
-        PouseOperate pouseOperate = FindObjectOfType<PouseOperate>().GetComponent<PouseOperate>();
         if ((this.defender1 == null) || (bank._Account < defender1._Price) || 
             (takenPositions.Contains(worldPos)) || pouseOperate.Paused) { return; }
         bank.TakePoints(defender1._Price);

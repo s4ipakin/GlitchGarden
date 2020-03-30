@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Defender : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class Defender : MonoBehaviour
     public delegate void StopAttacking();
     public event StopAttacking OnFinished;
     Health health;
+    public static event Action<Defender> SayImDead;
     #endregion
 
     private void Start()
@@ -31,11 +33,12 @@ public class Defender : MonoBehaviour
 
     private void LeavePlace(Transform transform)
     {
-        var spawn = FindObjectOfType<SpawnDefender>().GetComponent<SpawnDefender>(); //.FreePos(transform.position)
-        if (spawn)
+        
+        if (SayImDead != null)
         {
-            spawn.FreePos(transform.position);
+            SayImDead(this);
         }
+
         if (OnFinished != null)
         {
             OnFinished();
